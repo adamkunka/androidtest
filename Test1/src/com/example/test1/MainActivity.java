@@ -90,13 +90,25 @@ public class MainActivity extends FragmentActivity implements ActionBar.OnNaviga
     public boolean onNavigationItemSelected(int position, long id) {
         // When the given dropdown item is selected, show its contents in the
         // container view.
-        Fragment fragment = new DummySectionFragment();
+        Fragment fragment = null;
         Bundle args = new Bundle();
-        args.putInt(DummySectionFragment.ARG_SECTION_NUMBER, position + 1);
-        fragment.setArguments(args);
+
+        switch (position)
+    	{
+    	case 0:
+    		fragment = new CameraFragment();
+    		break;
+    	case 1:
+    	case 2:
+    		fragment = new DummySectionFragment();
+	        args.putInt(DummySectionFragment.ARG_SECTION_NUMBER, position + 1);
+	        fragment.setArguments(args);
+	        break;
+    	}
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.container, fragment)
-                .commit();
+        .replace(R.id.container, fragment)
+        .commit();
+
         return true;
     }
 
@@ -111,10 +123,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.OnNaviga
          * fragment.
          */
         public static final String ARG_SECTION_NUMBER = "section_number";
-        private Camera mCamera;
-        private int mCameraId;
-        private CameraPreview mCameraPreview;
-
+        
         public DummySectionFragment() {
         }
 
@@ -124,6 +133,44 @@ public class MainActivity extends FragmentActivity implements ActionBar.OnNaviga
             View rootView = inflater.inflate(R.layout.fragment_main_dummy, container, false);
             TextView dummyTextView = (TextView) rootView.findViewById(R.id.section_label);
             dummyTextView.setText(Integer.toString(getArguments().getInt(ARG_SECTION_NUMBER)));
+
+            return rootView;
+        }
+
+		@Override
+		public void onPause() {
+			// TODO Auto-generated method stub
+			super.onPause();
+		}
+
+		@Override
+		public void onResume() {
+			// TODO Auto-generated method stub
+			super.onResume();
+	        }
+    }
+
+    /**
+     * A dummy fragment representing a section of the app, but that simply
+     * displays dummy text.
+     */
+    public static class CameraFragment extends Fragment {
+        /**
+         * The fragment argument representing the section number for this
+         * fragment.
+         */
+        public static final String ARG_SECTION_NUMBER = "section_number";
+        private Camera mCamera;
+        private int mCameraId;
+        private CameraPreview mCameraPreview;
+
+        public CameraFragment() {
+        }
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                Bundle savedInstanceState) {
+            View rootView = inflater.inflate(R.layout.fragment_main_dummy, container, false);
 
             return rootView;
         }
